@@ -19,24 +19,19 @@ pipeline {
                 jacoco()
             }
         }
-        stage('build') { 
-            steps { 
-               sh 'mvn install'
-            }
-        }
-        stage('Package') {
-            steps {
-                echo 'Packaging'
-                sh 'mvn package -DskipTests'
-            }
-        }
-        stage("SonarQube analysis") {
+         stage("SonarQube analysis") {
             steps {
               withSonarQubeEnv('project-1') {
                   sh 'mvn sonar:sonar'
               }
             }
           }
+        stage('Package') {
+            steps {
+                echo 'Packaging'
+                sh 'mvn package -DskipTests'
+            }
+        }
         stage('Deploy') {
             steps {
                 echo '## TODO DEPLOYMENT ##'
