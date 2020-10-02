@@ -6,10 +6,10 @@ pipeline {
                sh 'mvn compile'
             }
          }
-        stage("build & SonarQube analysis") {
+        stage("SonarQube analysis") {
             steps {
               withSonarQubeEnv('project-1') {
-                  sh 'mvn sonar:sonar'
+                  sh 'mvn clean package sonar:sonar'
               }
             }
           }
