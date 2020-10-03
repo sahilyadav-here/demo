@@ -73,6 +73,7 @@ pipeline {
     post {
         always {
             echo 'JENKINS PIPELINE'
+            junit 'target/surefire-reports/*.xml'
         }
         success {
             echo 'JENKINS PIPELINE SUCCESSFUL'
