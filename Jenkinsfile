@@ -37,10 +37,26 @@ pipeline {
               }
             }
           }
-        stage('Deploy') {
+        stage('Deploy to Prod') {
+            when {
+                branch 'master'
+            }
             steps {
                 script {
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    dockerImage = docker.build registry + "prod." + ":$BUILD_NUMBER"
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+        stage('Deploy to Dev') {
+            when {
+                branch 'development'
+            }
+            steps {
+                script {
+                    dockerImage = docker.build registry + "dev." + ":$BUILD_NUMBER"
                     docker.withRegistry( '', registryCredential ) {
                         dockerImage.push()
                     }
@@ -48,6 +64,10 @@ pipeline {
             }
         }
         stage('Cleaning up') {
+            when {
+                branch 'master'
+                branch 'development'
+            }
             steps {
                 sh "docker rmi $registry:$BUILD_NUMBER"
             }
