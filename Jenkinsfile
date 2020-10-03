@@ -1,4 +1,9 @@
 pipeline {
+    environment {
+        registry = "YourDockerhubAccount/YourRepository"
+        registryCredential = 'dockerhub_id'
+        dockerImage = ''
+    }
     agent any
     stages {
         stage('Build') {
@@ -34,9 +39,19 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                echo '## TODO DEPLOYMENT ##'
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                    }
+                }
             }
         }
+        stage('Cleaning up') {
+            steps {
+                sh "docker rmi $registry:$BUILD_NUMBER"
+            }
+        } 
     }
     
     post {
