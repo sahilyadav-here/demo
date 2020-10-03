@@ -39,7 +39,10 @@ pipeline {
           }
         stage('Deploy to Prod') {
             when {
-                branch 'master'
+                anyOf{
+                    branch 'master';
+                    branch 'release'
+                }
             }
             steps {
                 script {
@@ -47,6 +50,7 @@ pipeline {
                     docker.withRegistry( '', registryCredential ) {
                         dockerImage.push()
                     }
+                    sh "docker rmi $registry:prod-$BUILD_NUMBER"
                 }
             }
         }
@@ -60,20 +64,10 @@ pipeline {
                     docker.withRegistry( '', registryCredential ) {
                         dockerImage.push()
                     }
+                    sh "docker rmi $registry:dev-$BUILD_NUMBER"
                 }
             }
         }
-        stage('Cleaning up') {
-            when {
-                anyOf{
-                    branch 'master';
-                    branch 'development'
-                }
-            }
-            steps {
-                sh "docker rmi $registry:$BUILD_NUMBER"
-            }
-        } 
     }
     
     post {
