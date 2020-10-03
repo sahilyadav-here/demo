@@ -45,6 +45,7 @@ pipeline {
         }
         success {
             echo 'JENKINS PIPELINE SUCCESSFUL'
+            archiveArtifacts artifacts: 'target/*.*', onlyIfSuccessful: true
         }
         failure {
             echo 'JENKINS PIPELINE FAILED'
