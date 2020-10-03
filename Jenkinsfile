@@ -43,7 +43,7 @@ pipeline {
             }
             steps {
                 script {
-                    dockerImage = docker.build registry + "prod." + ":$BUILD_NUMBER"
+                    dockerImage = docker.build registry + ":prod-" + $BUILD_NUMBER
                     docker.withRegistry( '', registryCredential ) {
                         dockerImage.push()
                     }
@@ -56,7 +56,7 @@ pipeline {
             }
             steps {
                 script {
-                    dockerImage = docker.build registry + "dev." + ":$BUILD_NUMBER"
+                    dockerImage = docker.build registry + ":dev-" + $BUILD_NUMBER
                     docker.withRegistry( '', registryCredential ) {
                         dockerImage.push()
                     }
