@@ -50,7 +50,7 @@ pipeline {
                     docker.withRegistry( '', registryCredential ) {
                         dockerImage.push()
                     }
-                    sh "docker rmi $registry:prod-$BUILD_NUMBER"
+                    sh "docker rmi $registry:prod-v$BUILD_NUMBER"
                 }
             }
         }
@@ -64,7 +64,7 @@ pipeline {
                     docker.withRegistry( '', registryCredential ) {
                         dockerImage.push()
                     }
-                    sh "docker rmi $registry:dev-$BUILD_NUMBER"
+                    sh "docker rmi $registry:dev-v$BUILD_NUMBER"
                 }
             }
         }
