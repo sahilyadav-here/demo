@@ -1,6 +1,6 @@
 pipeline {
     environment {
-        registry = "sahilyadavhere/Sapientdemo"
+        registry = "sahilyadavhere/sapientdemo"
         registryCredential = 'dockerhub_id'
         dockerImage = ''
     }
