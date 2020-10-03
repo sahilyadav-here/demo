@@ -18,6 +18,12 @@ pipeline {
                 sh 'mvn test'
             }
         }
+        stage('Package') {
+            steps {
+                echo 'Packaging'
+                sh 'mvn package -DskipTests'
+            }
+        }
         stage('JaCoCo') {
             steps {
                 echo 'Code Coverage'
@@ -31,12 +37,6 @@ pipeline {
               }
             }
           }
-        stage('Package') {
-            steps {
-                echo 'Packaging'
-                sh 'mvn package -DskipTests'
-            }
-        }
         stage('Deploy') {
             steps {
                 script {
