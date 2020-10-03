@@ -65,8 +65,10 @@ pipeline {
         }
         stage('Cleaning up') {
             when {
-                branch 'master'
-                branch 'development'
+                anyOf{
+                    branch 'master';
+                    branch 'development'
+                }
             }
             steps {
                 sh "docker rmi $registry:$BUILD_NUMBER"
